@@ -1,24 +1,26 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import AppBar from './Components/AppBar';
+import PanList from './Components/PanList';
+import Button from '@material-ui/core/Button';
 
 function App() {
+  const [activity, setActivity] = React.useState();
+
+  const clickHandler = (event) => {
+    setActivity("addPan");
+  }
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+      <AppBar pageName="I love Pizza"/>
       </header>
+      <body>
+        <PanList />
+        {activity === "addPan" ? <h1>Sto aggiungendo una padella</h1> : <h1>Sto per salvare il contenuto</h1>}
+        <Button size="medium" color="primary" variant="contained" onClick={clickHandler}>Calcola ingredienti</Button>
+      </body>
     </div>
   );
 }
