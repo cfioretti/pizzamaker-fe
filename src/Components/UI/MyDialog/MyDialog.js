@@ -1,5 +1,4 @@
 import React from 'react';
-import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
@@ -15,12 +14,7 @@ export default function MyDialog(props) {
           {props.children}
         </DialogContent>
         <DialogActions>
-          <Button onClick={props.close} color="primary">
-            Cancel
-          </Button>
-          <Button onClick={props.close} color="primary">
-            Subscribe
-          </Button>
+          {props.buttons}
         </DialogActions>
       </Dialog>
     </div>

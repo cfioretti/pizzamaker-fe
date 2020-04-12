@@ -5,6 +5,7 @@ import PanForm from '../../Components/PanForm/PanForm';
 import Button from '@material-ui/core/Button';
 import MyDialog from '../../Components/UI/MyDialog/MyDialog';
 import axios from 'axios';
+import Ingredients from '../../Components/Ingredients/Ingredients';
 
 
 const PizzaManager = () => {
@@ -12,6 +13,28 @@ const PizzaManager = () => {
         activity: 'ready',
         pans: [],
     });
+
+    const ingredientLabels = {
+        dough: "Impasto",
+        flour: "Farina",
+        water: "Acqua",
+        salt: "Sale",
+        evoOil: "Olio d'Oliva",
+        yeast: "Lievito"
+    }
+
+    const measureLabels = {
+        diameter: "Diametro",
+        edge: "Lato",
+        width: "Larghezza",
+        length: "Lunghezza"
+    }
+
+    const panLabels = {
+        rectangular: "Rettangolare",
+        square: "Quadrata",
+        round: "Rotonda",
+    }
 
     const openFormHandler = (event) => {
         setState({...state, activity: "addPan"});
@@ -21,50 +44,65 @@ const PizzaManager = () => {
         setState({...state, activity: 'ready'});
     }
 
+    const selectPanHandler = (event) => {
+        let pans = [...state.pans];
+        pans[event.target.index - 1].selected = true;
+        const newState = {
+            ...state,
+            pans: pans
+        }
+        setState(newState);
+    }
+
     const addPan = (pan) => {
         let pans = [...state.pans, pan];
 
         setState({
             ...state, 
-            pans: pans
+            pans: pans,
+            activity: 'ready'
         });
+        return;
     }
 
     const calculateIngredients = () => {
-        const req = {
-            pans: [
-                {
-                    shape: "Round",
-                    measure: { diameter: 6 }
-                },
-                {
-                    shape: "Rectangular",
-                    measure: { width: 6, length: 7}
-                }
-            ]
-        };
-
-        axios.post("http://127.0.0.1:8000/api/pans", req)
+        axios.post("http://127.0.0.1:8000/api/pans", {pans: state.pans})
         .then(res => {
-            const result = res.data;
+            let total = res.data.total;
+            let pans = res.data.pans;
+            console.log(pans);
             setState({
                 ...state,
-                result: result
+                totalIngredients: total,
+                panIngredients: pans
             });
-            console.log(result);
         })
     }
 
+    let totals = "";
+    let panIngredients = "";
+
+    if (state.totalIngredients) {
+        totals = Object.keys(state.totalIngredients).map(key => (
+            <p key={key}>{ingredientLabels[key]}: {state.totalIngredients[key]} g</p>
+        ));
+    }
+
+    if (state.panIngredients) {
+        panIngredients = state.panIngredients.map((obj, index) => (
+            <p key={index}>{panLabels[obj.shape]}: {obj.dough}</p>
+        ));
+    }
+
+
     return (
         <Aux>
-            <PanList pans={state.pans} addHandler={openFormHandler}/>
-            {
-            state.activity === "addPan" ? 
+            <PanList pans={state.pans} selectHandler={selectPanHandler} addHandler={openFormHandler}/>
+            {(totals || panIngredients) ? <Ingredients totalIngredients={totals} panIngredients={panIngredients}/> : null}
+            <Button size="medium" onClick={calculateIngredients} color="primary" variant="contained">Calcola ingredienti</Button>
             <MyDialog title="Aggiungi una teglia" open={state.activity === "addPan"} close={closeFormHandler}>
-                <PanForm complete={addPan}/>   
+                <PanForm closeModal={closeFormHandler} complete={addPan}/>   
             </MyDialog>
-            :<Button size="medium" onClick={calculateIngredients} color="primary" variant="contained">Calcola ingredienti</Button>
-            }
         </Aux>
     );
 };

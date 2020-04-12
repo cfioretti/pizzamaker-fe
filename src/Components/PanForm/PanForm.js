@@ -46,9 +46,9 @@ export default function PanForm(props) {
     activeStep: 0,
     panType: "",
     panTypes: {
-      Rotonda: ["Diametro"],
-      Quadrata: ["Lato"],
-      Rettangolare: ["Lunghezza", "Larghezza"]
+      round: ["diameter"],
+      square: ["edge"],
+      rectangular: ["width", "length"]
     },
     panMeasures: {
       
@@ -61,7 +61,7 @@ export default function PanForm(props) {
   const handleNext = () => {
     //setActiveStep(prevActiveStep => prevActiveStep + 1);
     if (state.activeStep === steps.length - 1) {
-      props.complete({type: state.panType, dimensions: state.panMeasures});
+      props.complete({shape: state.panType, measure: state.panMeasures});
     };
 
     setState(prevState => ({...state, activeStep: prevState.activeStep + 1}));
@@ -99,6 +99,18 @@ export default function PanForm(props) {
   };
 
   function getStepContent(step) {
+    const measureLabels = {
+      diameter: "Diametro",
+      edge: "Lato",
+      width: "Larghezza",
+      length: "Lunghezza"
+    }
+
+    const panLabels = {
+      rectangular: "Rettangolare",
+      square: "Quadrata",
+      round: "Rotonda",
+    }
 
     var shape = state.panType ? state.panType : null;
 
@@ -107,9 +119,9 @@ export default function PanForm(props) {
         return (
           <FormControl component="fieldset">
             <RadioGroup name="panType" value={state.panType} onChange={handleTypeChange}>
-              <FormControlLabel value="Rotonda" control={<Radio />} label="Rotonda" />
-              <FormControlLabel value="Quadrata" control={<Radio />} label="Quadrata" />
-              <FormControlLabel value="Rettangolare" control={<Radio />} label="Rettangolare" />
+              <FormControlLabel value="round" control={<Radio />} label={panLabels.round} />
+              <FormControlLabel value="square" control={<Radio />} label={panLabels.square} />
+              <FormControlLabel value="rectangular" control={<Radio />} label={panLabels.rectangular} />
             </RadioGroup>
           </FormControl>
         );
@@ -120,9 +132,9 @@ export default function PanForm(props) {
               <TextField
                 style={{margin: "10px 5px"}}
                 key={dim}
-                label={dim}
+                label={measureLabels[dim]}
                 variant="outlined"
-                helperText="Inserire un numero"
+                helperText="Inserisci un numero"
                 InputProps={{
                   endAdornment: <InputAdornment position="end">cm</InputAdornment>,
                   value: state.panMeasures ? state.panMeasures[dim] : ""
@@ -135,14 +147,11 @@ export default function PanForm(props) {
         return (
           <div>
             <Typography variant="body1">
-              Forma: <strong>{state.panType}</strong>
-            </Typography>
-            <Typography variant="body1">
-              Dimensioni:
+              Teglia <strong>{panLabels[state.panType]}</strong>
             </Typography>
             {Object.keys(state.panMeasures).map((key) => (
               <Typography key={key} variant="body1">
-                {key}: <strong>{state.panMeasures[key]}</strong> cm
+                {measureLabels[key]}: <strong>{state.panMeasures[key]}</strong> cm
               </Typography>
             ))}
           </div>
@@ -169,7 +178,7 @@ export default function PanForm(props) {
                                 onClick={handleBack}
                                 className={classes.button}
                             >
-                                Back
+                                Precedente
                             </Button>
                             <Button
                                 variant="contained"
@@ -177,7 +186,7 @@ export default function PanForm(props) {
                                 onClick={handleNext}
                                 className={classes.button}
                             >
-                                {state.activeStep === steps.length - 1 ? 'Finish' : 'Next'}
+                                {state.activeStep === steps.length - 1 ? 'Conferma' : 'Successivo'}
                             </Button>
                             </div>
                         </div>

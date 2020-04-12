@@ -23,10 +23,10 @@ export default function PanItem(props) {
                 <img className={classes.icon} src="/plus.png" alt="Aggiungi"/>
                 <h4>Aggiungi teglia</h4>
             </Card>:
-            <Card className={classes.card}>
+            <Card onClick={props.selectHandler} className={classes.card}>
                 <img className={classes.icon} src="/pizza-icon.png" alt="Pizza"/>   
                 {Object.keys(props.dimensions).map((key) => (
-                    <p>{key.slice(0, 1)}: {props.dimensions[key]} cm</p>
+                    <p key={key}>{key.slice(0, 1).toUpperCase()} {props.dimensions[key]} cm</p>
                 ))}
             </Card>
         

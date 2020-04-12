@@ -7,10 +7,9 @@ const useStyles = makeStyles(theme => ({
   root: {
         display: "flex",
         padding: 20,
+        margin: "auto",
         width: "100%",
-        margin: 20,
         boxSizing: "border-box",
-        alignContent: "center"
   },
   icon: {
         width: 100,
@@ -24,13 +23,13 @@ export default function SpacingGrid(props) {
 
   return (
     <Grid container className={classes.root} justify="center" spacing={2}>
-      <Grid item>
+      <Grid key={-1} item>
           <PanItem onClick={props.addHandler} create/>
       </Grid>
       {props.pans.map((pan, index) => (
-          <Grid key={index} item>
-              <PanItem key={index} shape={pan.type} dimensions={pan.dimensions}/>
-          </Grid>
+        <Grid key={index} item>
+          <PanItem key={index} selectHandler={() => props.selectHandler} shape={pan.type} dimensions={pan.measure}/>
+        </Grid>
       ))}
     </Grid>
   );
