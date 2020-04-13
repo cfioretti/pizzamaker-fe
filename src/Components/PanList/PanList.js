@@ -21,6 +21,8 @@ const useStyles = makeStyles(theme => ({
 export default function SpacingGrid(props) {
   const classes = useStyles();
 
+  const selectedPans = props.selectedPans;
+
   return (
     <Grid container className={classes.root} justify="center" spacing={2}>
       <Grid key={-1} item>
@@ -28,7 +30,7 @@ export default function SpacingGrid(props) {
       </Grid>
       {props.pans.map((pan, index) => (
         <Grid key={index} item>
-          <PanItem key={index} selectHandler={() => props.selectHandler} shape={pan.type} dimensions={pan.measure}/>
+          <PanItem key={index} selected={selectedPans.includes(index)} selectHandler={() => props.selectHandler(index)} shape={pan.type} dimensions={pan.measures}/>
         </Grid>
       ))}
     </Grid>

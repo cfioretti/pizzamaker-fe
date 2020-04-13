@@ -61,7 +61,7 @@ export default function PanForm(props) {
   const handleNext = () => {
     //setActiveStep(prevActiveStep => prevActiveStep + 1);
     if (state.activeStep === steps.length - 1) {
-      props.complete({shape: state.panType, measure: state.panMeasures});
+      props.complete({shape: state.panType, measures: state.panMeasures});
     };
 
     setState(prevState => ({...state, activeStep: prevState.activeStep + 1}));

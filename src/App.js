@@ -7,7 +7,7 @@ function App() {
 
   return (
     <div className="App">
-      <Layout title="I love Pizza">
+      <Layout title="Pizza Maker">
         <PizzaManager/>
       </Layout>
     </div>

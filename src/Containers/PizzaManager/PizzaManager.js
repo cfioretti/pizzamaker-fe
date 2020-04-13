@@ -12,6 +12,7 @@ const PizzaManager = () => {
     const [state, setState] = useState({
         activity: 'ready',
         pans: [],
+        selectedPans: []
     });
 
     const ingredientLabels = {
@@ -44,12 +45,21 @@ const PizzaManager = () => {
         setState({...state, activity: 'ready'});
     }
 
-    const selectPanHandler = (event) => {
-        let pans = [...state.pans];
-        pans[event.target.index - 1].selected = true;
-        const newState = {
+    const selectPanHandler = (index) => {
+        console.log("Selected");
+        let selectedPans = [...state.selectedPans];
+
+        if ( !selectedPans.includes(index) ) {
+            selectedPans.push(index);
+            
+        } else {
+            selectedPans.splice(selectedPans.indexOf(index), 1);
+           
+        }
+
+        let newState = {
             ...state,
-            pans: pans
+            selectedPans: selectedPans
         }
         setState(newState);
     }
@@ -66,7 +76,10 @@ const PizzaManager = () => {
     }
 
     const calculateIngredients = () => {
-        axios.post("http://127.0.0.1:8000/api/pans", {pans: state.pans})
+        let panToSend = state.selectedPans.map((value) => {
+            return state.pans[value];
+        });
+        axios.post("http://127.0.0.1:8000/api/pans", {pans: panToSend})
         .then(res => {
             let total = res.data.total;
             let pans = res.data.pans;
@@ -75,6 +88,12 @@ const PizzaManager = () => {
                 ...state,
                 totalIngredients: total,
                 panIngredients: pans
+            });
+        }).catch(error => {
+            setState({
+                ...state,
+                totalIngredients: "",
+                panIngredients: ""
             });
         })
     }
@@ -90,14 +109,14 @@ const PizzaManager = () => {
 
     if (state.panIngredients) {
         panIngredients = state.panIngredients.map((obj, index) => (
-            <p key={index}>{panLabels[obj.shape]}: {obj.dough}</p>
+            <p key={index}>{panLabels[obj.shape]}: {obj.dough} g</p>
         ));
     }
 
 
     return (
         <Aux>
-            <PanList pans={state.pans} selectHandler={selectPanHandler} addHandler={openFormHandler}/>
+            <PanList pans={state.pans} selectedPans={state.selectedPans} selectHandler={selectPanHandler} addHandler={openFormHandler}/>
             {(totals || panIngredients) ? <Ingredients totalIngredients={totals} panIngredients={panIngredients}/> : null}
             <Button size="medium" onClick={calculateIngredients} color="primary" variant="contained">Calcola ingredienti</Button>
             <MyDialog title="Aggiungi una teglia" open={state.activity === "addPan"} close={closeFormHandler}>
