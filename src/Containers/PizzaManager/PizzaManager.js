@@ -4,8 +4,9 @@ import PanList from '../../Components/PanList/PanList';
 import PanForm from '../../Components/PanForm/PanForm';
 import Button from '@material-ui/core/Button';
 import MyDialog from '../../Components/UI/MyDialog/MyDialog';
-import axios from 'axios';
+import axios from '../../Axios/Axios';
 import Ingredients from '../../Components/Ingredients/Ingredients';
+import Typography from '@material-ui/core/Typography';
 
 
 const PizzaManager = () => {
@@ -67,9 +68,13 @@ const PizzaManager = () => {
     const addPan = (pan) => {
         let pans = [...state.pans, pan];
 
+        let selectedPans = [...state.selectedPans];
+        selectedPans.push(pans.length - 1);
+
         setState({
             ...state, 
             pans: pans,
+            selectedPans: selectedPans,
             activity: 'ready'
         });
         return;
@@ -79,7 +84,7 @@ const PizzaManager = () => {
         let panToSend = state.selectedPans.map((value) => {
             return state.pans[value];
         });
-        axios.post("http://127.0.0.1:8000/api/pans", {pans: panToSend})
+        axios.post("/api/pans", {pans: panToSend})
         .then(res => {
             let total = res.data.total;
             let pans = res.data.pans;
@@ -116,9 +121,11 @@ const PizzaManager = () => {
 
     return (
         <Aux>
+            {state.selectedPans.length > 0 ?
+            <h3>Seleziona una o più teglie</h3>: <h3 style={{visibility: "hidden"}}>Seleziona una o più teglie</h3>}
             <PanList pans={state.pans} selectedPans={state.selectedPans} selectHandler={selectPanHandler} addHandler={openFormHandler}/>
-            {(totals || panIngredients) ? <Ingredients totalIngredients={totals} panIngredients={panIngredients}/> : null}
             <Button size="medium" onClick={calculateIngredients} color="primary" variant="contained">Calcola ingredienti</Button>
+            {(totals || panIngredients) ? <Ingredients totalIngredients={totals} panIngredients={panIngredients}/> : null}
             <MyDialog title="Aggiungi una teglia" open={state.activity === "addPan"} close={closeFormHandler}>
                 <PanForm closeModal={closeFormHandler} complete={addPan}/>   
             </MyDialog>
