@@ -122,7 +122,7 @@ const PizzaManager = () => {
     return (
         <Aux>
             {state.selectedPans.length > 0 ?
-            <h3>Seleziona una o più teglie</h3>: <h3 style={{visibility: "hidden"}}>Seleziona una o più teglie</h3>}
+            <h3 style={{color: '#223b59'}}>Seleziona una o più teglie</h3>: <h3 style={{visibility: "hidden"}}>Seleziona una o più teglie</h3>}
             <PanList pans={state.pans} selectedPans={state.selectedPans} selectHandler={selectPanHandler} addHandler={openFormHandler}/>
             <Button size="medium" onClick={calculateIngredients} color="primary" variant="contained">Calcola ingredienti</Button>
             {(totals || panIngredients) ? <Ingredients totalIngredients={totals} panIngredients={panIngredients}/> : null}
