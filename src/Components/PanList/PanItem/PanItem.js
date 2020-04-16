@@ -23,6 +23,8 @@ export default function PanItem(props) {
 
     const cardClasses = [classes.card];
 
+    const iconPath = "/pans/" + props.shape + "-pan.png";
+
     if (props.selected === true) {
         cardClasses.push(classes.selected);
     }
@@ -34,7 +36,7 @@ export default function PanItem(props) {
                 <h4>Aggiungi teglia</h4>
             </Card>:
             <Card onClick={props.selectHandler} className={cardClasses.join(' ')}>
-                <img className={classes.icon} src="/pizza-icon.png" alt="Pizza"/>   
+                <img className={classes.icon} src={iconPath} alt="Teglia"/>   
                 {Object.keys(props.dimensions).map((key) => (
                     <p key={key}>{key.slice(0, 1).toUpperCase()} {props.dimensions[key]} cm</p>
                 ))}

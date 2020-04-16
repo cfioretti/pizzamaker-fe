@@ -5,6 +5,7 @@ import Box from '@material-ui/core/Box'
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Aux from '../../hoc/Aux/Aux';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -33,6 +34,8 @@ const useStyles = makeStyles(theme => ({
 export default function Ingredients(props) {
     const classes = useStyles();
 
+    const matches = useMediaQuery('(min-width:600px)');
+
     return (
         <Box className={classes.root} alignContent="center">
             <Card raised className={classes.card}>
@@ -45,9 +48,11 @@ export default function Ingredients(props) {
                     </Grid>
                     {props.panIngredients.length > 1?
                         <Aux>
-                            <Grid item>
-                                <div className={classes.verticalDivider}></div>
-                            </Grid>
+                            {matches ?   
+                                <Grid item>
+                                    <div className={classes.verticalDivider}></div>
+                                </Grid>: null
+                            }
                             <Grid item>
                                 <Typography className={classes.sectionTitle} type='subtitle1'>
                                     Impasto per teglia
