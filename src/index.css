@@ -13,22 +13,3 @@ code {
   font-family: "Avenir Next Condensed", source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
-
-.MuiTypography-root {
-  color: #223b59!important;
-}
-
-.MuiIconButton-label,
-.MuiStepIcon-completed,
-.MuiStepIcon-active {
-  color: #266f80!important;
-}
-
-.MuiPaper-rounded,
-.MuiPaper-root {
-  background-color: #faf4e1!important;
-}
-
-.MuiButton-contained {
-  background-color: #266f80!important;
-}
