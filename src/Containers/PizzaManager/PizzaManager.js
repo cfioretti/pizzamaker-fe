@@ -6,8 +6,6 @@ import Button from '@material-ui/core/Button';
 import MyDialog from '../../Components/UI/MyDialog/MyDialog';
 import axios from '../../Axios/Axios';
 import Ingredients from '../../Components/Ingredients/Ingredients';
-import Typography from '@material-ui/core/Typography';
-
 
 const PizzaManager = () => {
     const [state, setState] = useState({
@@ -25,20 +23,13 @@ const PizzaManager = () => {
         yeast: "Lievito"
     }
 
-    const measureLabels = {
-        diameter: "Diametro",
-        edge: "Lato",
-        width: "Larghezza",
-        length: "Lunghezza"
-    }
-
     const panLabels = {
         rectangular: "Rettangolare",
         square: "Quadrata",
         round: "Rotonda",
     }
 
-    const openFormHandler = (event) => {
+    const openFormHandler = () => {
         setState({...state, activity: "addPan"});
     }
 
@@ -77,7 +68,6 @@ const PizzaManager = () => {
             selectedPans: selectedPans,
             activity: 'ready'
         });
-        return;
     }
 
     const calculateIngredients = () => {
@@ -94,7 +84,7 @@ const PizzaManager = () => {
                 totalIngredients: total,
                 panIngredients: pans
             });
-        }).catch(error => {
+        }).catch(() => {
             setState({
                 ...state,
                 totalIngredients: "",

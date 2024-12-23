@@ -1,5 +1,5 @@
 import React from 'react';
-import { makeStyles, ThemeProvider } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
@@ -13,8 +13,6 @@ import TextField from '@material-ui/core/TextField';
 import FormControl from '@material-ui/core/FormControl';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Typography from '@material-ui/core/Typography';
-import theme from '../../Theme/Theme';
-
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -63,7 +61,7 @@ export default function PanForm(props) {
     //setActiveStep(prevActiveStep => prevActiveStep + 1);
     if (state.activeStep === steps.length - 1) {
       props.complete({shape: state.panType, measures: state.panMeasures});
-    };
+    }
 
     setState(prevState => ({...state, activeStep: prevState.activeStep + 1}));
   };
@@ -75,7 +73,7 @@ export default function PanForm(props) {
 
   const handleInputChange = (dim) => (event) => {
     let value = event.target.value;
-    setState(prevState => ({
+    setState(() => ({
       ...state,
       panMeasures: {
         ...state.panMeasures,
@@ -92,7 +90,7 @@ export default function PanForm(props) {
       panMeasures[val] = ""
     });
 
-    setState(prevState => ({
+    setState(() => ({
       ...state, 
       panType: val,
       panMeasures: panMeasures
@@ -163,9 +161,9 @@ export default function PanForm(props) {
   }
 
   return (
-    <Grid container className={classes.root} justify="center" spacing={2}>
+    <Grid container className={classes.root} justifyContent="center" spacing={2}>
         <Grid item lg={6} sm={12}>
-            <Grid container className={classes.root} justify="flex-start" spacing={2}>
+            <Grid container className={classes.root} justifyContent="flex-start" spacing={2}>
                 <Stepper activeStep={state.activeStep} className={classes.fullWidth} orientation="vertical">
                     {steps.map((label, index) => (
                     <Step key={label}>
