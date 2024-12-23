@@ -14,6 +14,7 @@ const useStyles = makeStyles(theme => ({
       top: theme.spacing(1),
       color: theme.palette.grey[500],
   },
+  background: '#2C8D93'
 }));
 
 export default function MyDialog(props) {

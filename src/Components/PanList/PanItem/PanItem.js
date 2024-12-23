@@ -14,7 +14,7 @@ const useStyles = makeStyles(theme => ({
         paddingTop: 10
     },
     selected: {
-        border: "#68d13b 2px solid"
+        border: "#bbe2dd 2px solid"
     }
 }));
 
@@ -33,12 +33,12 @@ export default function PanItem(props) {
         props.create ? 
             <Card onClick={props.onClick} className={classes.card}>
                 <img className={classes.icon} src="/plus.png" alt="Aggiungi"/>
-                <h4>Aggiungi teglia</h4>
+                <h4 style={{color: '#223b59'}}>Aggiungi teglia</h4>
             </Card>:
             <Card onClick={props.selectHandler} className={cardClasses.join(' ')}>
                 <img className={classes.icon} src={iconPath} alt="Teglia"/>   
                 {Object.keys(props.dimensions).map((key) => (
-                    <p key={key}>{key.slice(0, 1).toUpperCase()} {props.dimensions[key]} cm</p>
+                    <p style={{color: '#223b59'}} key={key}>{key.slice(0, 1).toUpperCase()} {props.dimensions[key]} cm</p>
                 ))}
             </Card>
         

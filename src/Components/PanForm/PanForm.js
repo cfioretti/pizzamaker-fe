@@ -1,5 +1,5 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, ThemeProvider } from '@material-ui/core/styles';
 import Stepper from '@material-ui/core/Stepper';
 import Step from '@material-ui/core/Step';
 import StepLabel from '@material-ui/core/StepLabel';
@@ -13,6 +13,7 @@ import TextField from '@material-ui/core/TextField';
 import FormControl from '@material-ui/core/FormControl';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Typography from '@material-ui/core/Typography';
+import theme from '../../Theme/Theme';
 
 
 const useStyles = makeStyles(theme => ({
@@ -117,30 +118,30 @@ export default function PanForm(props) {
     switch (step) {
       case 0:
         return (
-          <FormControl component="fieldset">
-            <RadioGroup name="panType" value={state.panType} onChange={handleTypeChange}>
-              <FormControlLabel value="round" control={<Radio />} label={panLabels.round} />
-              <FormControlLabel value="square" control={<Radio />} label={panLabels.square} />
-              <FormControlLabel value="rectangular" control={<Radio />} label={panLabels.rectangular} />
-            </RadioGroup>
-          </FormControl>
+            <FormControl component="fieldset">
+              <RadioGroup name="panType" value={state.panType} onChange={handleTypeChange}>
+                <FormControlLabel value="round" control={<Radio />} label={panLabels.round} />
+                <FormControlLabel value="square" control={<Radio />} label={panLabels.square} />
+                <FormControlLabel value="rectangular" control={<Radio />} label={panLabels.rectangular} />
+              </RadioGroup>
+            </FormControl>
         );
       case 1:
         return (
           state.panTypes[shape]? state.panTypes[shape].map(dim => {
             return (
-              <TextField
-                style={{margin: "10px 5px"}}
-                key={dim}
-                label={measureLabels[dim]}
-                variant="outlined"
-                helperText="Inserisci un numero"
-                InputProps={{
-                  endAdornment: <InputAdornment position="end">cm</InputAdornment>,
-                  value: state.panMeasures ? state.panMeasures[dim] : ""
-                }}
-                onChange={handleInputChange(dim)}
-              />
+                <TextField
+                  style={{margin: "10px 5px"}}
+                  key={dim}
+                  label={measureLabels[dim]}
+                  variant="outlined"
+                  helperText="Inserisci un numero"
+                  InputProps={{
+                    endAdornment: <InputAdornment position="end">cm</InputAdornment>,
+                    value: state.panMeasures ? state.panMeasures[dim] : ""
+                  }}
+                  onChange={handleInputChange(dim)}
+                />
             )}) : null
           );
       case 2:
