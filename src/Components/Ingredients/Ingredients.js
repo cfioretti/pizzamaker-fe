@@ -7,7 +7,7 @@ import Grid from '@material-ui/core/Grid';
 import Aux from '../../hoc/Aux/Aux';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
     root: {
         width: "100%",
         boxSizing: "border-box",
@@ -39,10 +39,10 @@ export default function Ingredients(props) {
     return (
         <Box className={classes.root} alignContent="center">
             <Card raised className={classes.card}>
-                <Grid container justify="center" spacing={2}>
+                <Grid container justifyContent="center" spacing={2}>
                     <Grid item>
                         <Typography className={classes.sectionTitle} type='subtitle1'>
-                            Ingredienti Totali
+                            Total Ingredients
                         </Typography>
                         {props.totalIngredients? props.totalIngredients: null}
                     </Grid>
@@ -55,13 +55,12 @@ export default function Ingredients(props) {
                             }
                             <Grid item>
                                 <Typography className={classes.sectionTitle} type='subtitle1'>
-                                    Impasto per teglia
+                                    Dough for pan
                                 </Typography>
                                 {props.panIngredients}
                             </Grid>
                         </Aux>:null
                     }
-                
                 </Grid> 
             </Card>
         </Box>

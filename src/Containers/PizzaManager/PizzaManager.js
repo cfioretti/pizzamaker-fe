@@ -15,18 +15,18 @@ const PizzaManager = () => {
     });
 
     const ingredientLabels = {
-        dough: "Impasto",
-        flour: "Farina",
-        water: "Acqua",
-        salt: "Sale",
-        evoOil: "Olio d'Oliva",
-        yeast: "Lievito"
+        dough: "Dough",
+        flour: "Flour",
+        water: "Water",
+        salt: "Salt",
+        evoOil: "EVO Oil",
+        yeast: "Yeast"
     }
 
     const panLabels = {
-        rectangular: "Rettangolare",
-        square: "Quadrata",
-        round: "Rotonda",
+        rectangular: "Rectangular",
+        square: "Square",
+        round: "Round",
     }
 
     const openFormHandler = () => {
@@ -78,7 +78,6 @@ const PizzaManager = () => {
         .then(res => {
             let total = res.data.total;
             let pans = res.data.pans;
-            console.log(pans);
             setState({
                 ...state,
                 totalIngredients: total,
@@ -108,15 +107,14 @@ const PizzaManager = () => {
         ));
     }
 
-
     return (
         <Aux>
             {state.selectedPans.length > 0 ?
-            <h3 style={{color: '#223b59'}}>Seleziona una o più teglie</h3>: <h3 style={{visibility: "hidden"}}>Seleziona una o più teglie</h3>}
+            <h3 style={{color: '#223b59'}}>Select one or more pans</h3> : <h3 style={{visibility: "hidden"}}>Select one or more pans</h3>}
             <PanList pans={state.pans} selectedPans={state.selectedPans} selectHandler={selectPanHandler} addHandler={openFormHandler}/>
-            <Button size="medium" onClick={calculateIngredients} color="primary" variant="contained">Calcola ingredienti</Button>
+            <Button size="medium" onClick={calculateIngredients} color="primary" variant="contained">Ingredient calculation</Button>
             {(totals || panIngredients) ? <Ingredients totalIngredients={totals} panIngredients={panIngredients}/> : null}
-            <MyDialog title="Aggiungi una teglia" open={state.activity === "addPan"} close={closeFormHandler}>
+            <MyDialog title="Add a pan" open={state.activity === "addPan"} close={closeFormHandler}>
                 <PanForm closeModal={closeFormHandler} complete={addPan}/>   
             </MyDialog>
         </Aux>

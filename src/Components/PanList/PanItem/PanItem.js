@@ -2,7 +2,7 @@ import React from 'react';
 import Card from '@material-ui/core/Card';
 import { makeStyles } from '@material-ui/core/styles';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
     card: {
         height: 200,
         width: 150,
@@ -32,11 +32,11 @@ export default function PanItem(props) {
     return (
         props.create ? 
             <Card onClick={props.onClick} className={classes.card}>
-                <img className={classes.icon} src="/plus.png" alt="Aggiungi"/>
-                <h4 style={{color: '#223b59'}}>Aggiungi teglia</h4>
+                <img className={classes.icon} src="/plus.png" alt="Add"/>
+                <h4 style={{color: '#223b59'}}>Add Pan</h4>
             </Card>:
             <Card onClick={props.selectHandler} className={cardClasses.join(' ')}>
-                <img className={classes.icon} src={iconPath} alt="Teglia"/>   
+                <img className={classes.icon} src={iconPath} alt="Pan"/>
                 {Object.keys(props.dimensions).map((key) => (
                     <p style={{color: '#223b59'}} key={key}>{key.slice(0, 1).toUpperCase()} {props.dimensions[key]} cm</p>
                 ))}

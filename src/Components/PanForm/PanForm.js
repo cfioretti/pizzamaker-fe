@@ -35,9 +35,8 @@ const useStyles = makeStyles(theme => ({
 
 
 function getSteps() {
-  return ['Seleziona un tipo di teglia', 'Inserisci le dimensioni', 'Riepilogo'];
+  return ['Select a pan type', 'Enter dimensions', 'Summary'];
 }
-
 
 export default function PanForm(props) {
   const classes = useStyles();
@@ -99,19 +98,19 @@ export default function PanForm(props) {
 
   function getStepContent(step) {
     const measureLabels = {
-      diameter: "Diametro",
-      edge: "Lato",
-      width: "Larghezza",
-      length: "Lunghezza"
+      diameter: "Diameter",
+      edge: "Edge",
+      width: "Width",
+      length: "Length"
     }
 
     const panLabels = {
-      rectangular: "Rettangolare",
-      square: "Quadrata",
-      round: "Rotonda",
+      rectangular: "Rectangular",
+      square: "Square",
+      round: "Round",
     }
 
-    var shape = state.panType ? state.panType : null;
+    let shape = state.panType ? state.panType : null;
 
     switch (step) {
       case 0:
@@ -133,7 +132,7 @@ export default function PanForm(props) {
                   key={dim}
                   label={measureLabels[dim]}
                   variant="outlined"
-                  helperText="Inserisci un numero"
+                  helperText="Insert a number"
                   InputProps={{
                     endAdornment: <InputAdornment position="end">cm</InputAdornment>,
                     value: state.panMeasures ? state.panMeasures[dim] : ""
@@ -146,7 +145,7 @@ export default function PanForm(props) {
         return (
           <div>
             <Typography variant="body1">
-              Teglia <strong>{panLabels[state.panType]}</strong>
+              Pan <strong>{panLabels[state.panType]}</strong>
             </Typography>
             {Object.keys(state.panMeasures).map((key) => (
               <Typography key={key} variant="body1">
@@ -177,7 +176,7 @@ export default function PanForm(props) {
                                 onClick={handleBack}
                                 className={classes.button}
                             >
-                                Precedente
+                              Previous
                             </Button>
                             <Button
                                 variant="contained"
@@ -185,7 +184,7 @@ export default function PanForm(props) {
                                 onClick={handleNext}
                                 className={classes.button}
                             >
-                                {state.activeStep === steps.length - 1 ? 'Conferma' : 'Successivo'}
+                                {state.activeStep === steps.length - 1 ? 'Confirm' : 'Next'}
                             </Button>
                             </div>
                         </div>
