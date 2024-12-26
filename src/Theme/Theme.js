@@ -1,25 +1,19 @@
-import { createMuiTheme } from '@material-ui/core/styles';
+import {createTheme} from '@material-ui/core/styles';
 
-const theme = createMuiTheme({
+const theme = createTheme({
     palette: {
-        primary: {
-          // light: will be calculated from palette.primary.main,
-          main: '#266f80',
-          // dark: will be calculated from palette.primary.main,
-          // contrastText: will be calculated to contrast with palette.primary.main
-        },
-        secondary: {
-          main: '#223b59',
-          // dark: will be calculated from palette.secondary.main,
-        },
-        // Used by `getContrastText()` to maximize the contrast between
-        // the background and the text.
-        contrastThreshold: 3,
-        // Used by the functions below to shift a color's luminance by approximately
-        // two indexes within its tonal palette.
-        // E.g., shift from Red 500 to Red 300 or Red 700.
-        tonalOffset: 0.2,
-    }
+        primary: { main: '#266f80' },
+        secondary: { main: '#223b59' }
+    },
+    typography: {
+        h3: {
+            fontSize: '1.5rem',
+            '@media (min-width:600px)': {
+                fontSize: '2rem',
+            }
+        }
+    },
+    spacing: factor => `${0.25 * factor}rem`
 });
 
 export default theme;

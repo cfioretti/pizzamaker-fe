@@ -1,4 +1,4 @@
-import React, { useState }  from 'react';
+import React, {useState} from 'react';
 import Aux from '../../hoc/Aux/Aux';
 import PanList from '../../Components/PanList/PanList';
 import PanForm from '../../Components/PanForm/PanForm';
@@ -38,15 +38,12 @@ const PizzaManager = () => {
     }
 
     const selectPanHandler = (index) => {
-        console.log("Selected");
         let selectedPans = [...state.selectedPans];
 
-        if ( !selectedPans.includes(index) ) {
+        if (!selectedPans.includes(index)) {
             selectedPans.push(index);
-            
         } else {
             selectedPans.splice(selectedPans.indexOf(index), 1);
-           
         }
 
         let newState = {
@@ -63,7 +60,7 @@ const PizzaManager = () => {
         selectedPans.push(pans.length - 1);
 
         setState({
-            ...state, 
+            ...state,
             pans: pans,
             selectedPans: selectedPans,
             activity: 'ready'
@@ -75,15 +72,15 @@ const PizzaManager = () => {
             return state.pans[value];
         });
         axios.post("/api/pans", {pans: panToSend})
-        .then(res => {
-            let total = res.data.total;
-            let pans = res.data.pans;
-            setState({
-                ...state,
-                totalIngredients: total,
-                panIngredients: pans
-            });
-        }).catch(() => {
+            .then(res => {
+                let total = res.data.total;
+                let pans = res.data.pans;
+                setState({
+                    ...state,
+                    totalIngredients: total,
+                    panIngredients: pans
+                });
+            }).catch(() => {
             setState({
                 ...state,
                 totalIngredients: "",
@@ -110,12 +107,16 @@ const PizzaManager = () => {
     return (
         <Aux>
             {state.selectedPans.length > 0 ?
-            <h3 style={{color: '#223b59'}}>Select one or more pans</h3> : <h3 style={{visibility: "hidden"}}>Select one or more pans</h3>}
-            <PanList pans={state.pans} selectedPans={state.selectedPans} selectHandler={selectPanHandler} addHandler={openFormHandler}/>
-            <Button size="medium" onClick={calculateIngredients} color="primary" variant="contained">Ingredient calculation</Button>
-            {(totals || panIngredients) ? <Ingredients totalIngredients={totals} panIngredients={panIngredients}/> : null}
+                <h3 style={{color: '#223b59'}}>Select one or more pans</h3> :
+                <h3 style={{visibility: "hidden"}}>Select one or more pans</h3>}
+            <PanList pans={state.pans} selectedPans={state.selectedPans} selectHandler={selectPanHandler}
+                     addHandler={openFormHandler}/>
+            <Button size="medium" onClick={calculateIngredients} color="primary" variant="contained">Ingredient
+                calculation</Button>
+            {(totals || panIngredients) ?
+                <Ingredients totalIngredients={totals} panIngredients={panIngredients}/> : null}
             <MyDialog title="Add a pan" open={state.activity === "addPan"} close={closeFormHandler}>
-                <PanForm closeModal={closeFormHandler} complete={addPan}/>   
+                <PanForm closeModal={closeFormHandler} complete={addPan}/>
             </MyDialog>
         </Aux>
     );
