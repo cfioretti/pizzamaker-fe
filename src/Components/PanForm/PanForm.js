@@ -14,18 +14,8 @@ import FormControl from '@material-ui/core/FormControl';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import Typography from '@material-ui/core/Typography';
 import FormHelperText from '@material-ui/core/FormHelperText';
-import { createTheme, ThemeProvider } from '@material-ui/core/styles';
-
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: '#2c8d93',
-    },
-    error: {
-      main: '#f4896f',
-    },
-  },
-});
+import { ThemeProvider } from '@material-ui/core/styles';
+import theme from "../../Theme/Theme";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -117,13 +107,12 @@ export default function PanForm(props) {
 
   const validateCurrentStep = () => {
     let isValid = true;
-    const newErrors = { ...state.errors };
+    const newErrors = {...state.errors};
 
     if (state.activeStep === 0) {
       newErrors.panType = validatePanType(state.panType);
       isValid = !newErrors.panType;
-    }
-    else if (state.activeStep === 1) {
+    } else if (state.activeStep === 1) {
       newErrors.measures = {};
       const dimensions = state.panTypes[state.panType];
 
@@ -156,7 +145,7 @@ export default function PanForm(props) {
     setState(prevState => ({
       ...prevState,
       activeStep: prevState.activeStep + 1,
-      errors: { panType: '', measures: {} }
+      errors: {panType: '', measures: {}}
     }));
   };
 
@@ -164,7 +153,7 @@ export default function PanForm(props) {
     setState(prevState => ({
       ...prevState,
       activeStep: prevState.activeStep - 1,
-      errors: { panType: '', measures: {} }
+      errors: {panType: '', measures: {}}
     }));
   };
 
@@ -223,48 +212,48 @@ export default function PanForm(props) {
     switch (step) {
       case 0:
         return (
-            <FormControl component="fieldset" error={!!state.errors.panType}>
-              <RadioGroup name="panType" value={state.panType} onChange={handleTypeChange}>
-                <FormControlLabel value="round" control={<Radio color="primary" />} label={panLabels.round} />
-                <FormControlLabel value="square" control={<Radio color="primary" />} label={panLabels.square} />
-                <FormControlLabel value="rectangular" control={<Radio color="primary" />} label={panLabels.rectangular} />
-              </RadioGroup>
-              {state.errors.panType && (
-                  <FormHelperText className={classes.errorText}>{state.errors.panType}</FormHelperText>
-              )}
-            </FormControl>
+          <FormControl component="fieldset" error={!!state.errors.panType}>
+            <RadioGroup name="panType" value={state.panType} onChange={handleTypeChange}>
+              <FormControlLabel value="round" control={<Radio color="primary"/>} label={panLabels.round}/>
+              <FormControlLabel value="square" control={<Radio color="primary"/>} label={panLabels.square}/>
+              <FormControlLabel value="rectangular" control={<Radio color="primary"/>} label={panLabels.rectangular}/>
+            </RadioGroup>
+            {state.errors.panType && (
+              <FormHelperText className={classes.errorText}>{state.errors.panType}</FormHelperText>
+            )}
+          </FormControl>
         );
       case 1:
         return (
-            state.panTypes[shape]?.map(dim => (
-                <TextField
-                    className={classes.errorField}
-                    style={{margin: "10px 5px"}}
-                    key={dim}
-                    label={measureLabels[dim]}
-                    variant="outlined"
-                    error={!!state.errors.measures[dim]}
-                    helperText={state.errors.measures[dim] || `Enter a number between ${MIN_DIMENSION} and ${MAX_DIMENSION}`}
-                    InputProps={{
-                      endAdornment: <InputAdornment position="end">cm</InputAdornment>,
-                      value: state.panMeasures ? state.panMeasures[dim] : ""
-                    }}
-                    onChange={handleInputChange(dim)}
-                />
-            ))
+          state.panTypes[shape]?.map(dim => (
+            <TextField
+              className={classes.errorField}
+              style={{margin: "10px 5px"}}
+              key={dim}
+              label={measureLabels[dim]}
+              variant="outlined"
+              error={!!state.errors.measures[dim]}
+              helperText={state.errors.measures[dim] || `Enter a number between ${MIN_DIMENSION} and ${MAX_DIMENSION}`}
+              InputProps={{
+                endAdornment: <InputAdornment position="end">cm</InputAdornment>,
+                value: state.panMeasures ? state.panMeasures[dim] : ""
+              }}
+              onChange={handleInputChange(dim)}
+            />
+          ))
         );
       case 2:
         return (
-            <div>
-              <Typography variant="body1">
-                Pan type: <strong>{panLabels[state.panType]}</strong>
+          <div>
+            <Typography variant="body1">
+              Pan type: <strong>{panLabels[state.panType]}</strong>
+            </Typography>
+            {Object.keys(state.panMeasures).map((key) => (
+              <Typography key={key} variant="body1">
+                {measureLabels[key]}: <strong>{state.panMeasures[key]}</strong> cm
               </Typography>
-              {Object.keys(state.panMeasures).map((key) => (
-                  <Typography key={key} variant="body1">
-                    {measureLabels[key]}: <strong>{state.panMeasures[key]}</strong> cm
-                  </Typography>
-              ))}
-            </div>
+            ))}
+          </div>
         );
       default:
         return 'Unknown step';
@@ -272,42 +261,42 @@ export default function PanForm(props) {
   }
 
   return (
-      <ThemeProvider theme={theme}>
-        <Grid container className={classes.root} justifyContent="center" spacing={2}>
-          <Grid item lg={6} sm={12}>
-            <Grid container className={classes.root} justifyContent="flex-start" spacing={2}>
-              <Stepper activeStep={state.activeStep} className={classes.fullWidth} orientation="vertical">
-                {steps.map((label, index) => (
-                    <Step key={label}>
-                      <StepLabel>{label}</StepLabel>
-                      <StepContent>
-                        {getStepContent(index)}
-                        <div className={classes.actionsContainer}>
-                          <div>
-                            <Button
-                                disabled={state.activeStep === 0}
-                                onClick={handleBack}
-                                className={classes.button}
-                            >
-                              Back
-                            </Button>
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                onClick={handleNext}
-                                className={classes.button}
-                            >
-                              {state.activeStep === steps.length - 1 ? 'Confirm' : 'Next'}
-                            </Button>
-                          </div>
-                        </div>
-                      </StepContent>
-                    </Step>
-                ))}
-              </Stepper>
-            </Grid>
+    <ThemeProvider theme={theme}>
+      <Grid container className={classes.root} justifyContent="center" spacing={2}>
+        <Grid item lg={6} sm={12}>
+          <Grid container className={classes.root} justifyContent="flex-start" spacing={2}>
+            <Stepper activeStep={state.activeStep} className={classes.fullWidth} orientation="vertical">
+              {steps.map((label, index) => (
+                <Step key={label}>
+                  <StepLabel>{label}</StepLabel>
+                  <StepContent>
+                    {getStepContent(index)}
+                    <div className={classes.actionsContainer}>
+                      <div>
+                        <Button
+                          disabled={state.activeStep === 0}
+                          onClick={handleBack}
+                          className={classes.button}
+                        >
+                          Back
+                        </Button>
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          onClick={handleNext}
+                          className={classes.button}
+                        >
+                          {state.activeStep === steps.length - 1 ? 'Confirm' : 'Next'}
+                        </Button>
+                      </div>
+                    </div>
+                  </StepContent>
+                </Step>
+              ))}
+            </Stepper>
           </Grid>
         </Grid>
-      </ThemeProvider>
+      </Grid>
+    </ThemeProvider>
   );
 }
