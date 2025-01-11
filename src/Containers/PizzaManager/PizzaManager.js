@@ -71,10 +71,12 @@ const PizzaManager = () => {
     let panToSend = state.selectedPans.map((value) => {
       return state.pans[value];
     });
-    axios.post("/api/pans", {pans: panToSend})
+    let uuid = "00000000-0000-0000-0000-000000000000";
+    axios.post("/recipes/" + uuid + "/aggregate", {pans: panToSend})
       .then(res => {
-        let total = res.data.total;
-        let pans = res.data.pans;
+        const responseData = res.data;
+        const total = responseData.data.dough;
+        const pans = responseData.data.splitIngredients.splitDough;
         setState({
           ...state,
           totalIngredients: total,
@@ -100,7 +102,7 @@ const PizzaManager = () => {
 
   if (state.panIngredients) {
     panIngredients = state.panIngredients.map((obj, index) => (
-      <p key={index}>{panLabels[obj.shape]}: {obj.dough} g</p>
+      <p key={index}>{panLabels[obj.shape]}: {obj.dough.total} g</p>
     ));
   }
 
