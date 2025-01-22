@@ -14,15 +14,6 @@ const PizzaManager = () => {
     selectedPans: []
   });
 
-  const ingredientLabels = {
-    dough: "Dough",
-    flour: "Flour",
-    water: "Water",
-    salt: "Salt",
-    evoOil: "EVO Oil",
-    yeast: "Yeast"
-  }
-
   const panLabels = {
     rectangular: "Rectangular",
     square: "Square",
@@ -78,7 +69,7 @@ const PizzaManager = () => {
         const totalIngredients = total.Ingredients.reduce((acc, ingredient) => {
           acc[ingredient.Name] = ingredient.Amount;
           return acc;
-        }, {});
+        }, { total: total.total });
         const pans = responseData.data.splitIngredients.splitDough;
         setState({
           ...state,
@@ -97,9 +88,11 @@ const PizzaManager = () => {
   let totals = "";
   let panIngredients = "";
 
+  const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
+
   if (state.totalIngredients) {
     totals = Object.keys(state.totalIngredients).map(key => (
-      <p key={key}>{ingredientLabels[key]}: {state.totalIngredients[key]} g</p>
+      <p key={key}>{capitalize(key)}: {state.totalIngredients[key]} g</p>
     ));
   }
 
