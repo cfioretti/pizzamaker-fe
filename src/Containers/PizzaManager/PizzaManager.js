@@ -65,16 +65,17 @@ const PizzaManager = () => {
     axios.post("/recipes/" + uuid + "/aggregate", {pans: panToSend})
       .then(res => {
         const responseData = res.data;
-        const total = responseData.data.dough;
-        const totalIngredients = total.Ingredients.reduce((acc, ingredient) => {
+        const doughTotal = responseData.data.dough;
+        const splitIngredients = responseData.data.splitIngredients;
+        const doughTotalIngredients = doughTotal.Ingredients.reduce((acc, ingredient) => {
           acc[ingredient.Name] = ingredient.Amount;
           return acc;
-        }, { total: total.total });
-        const pans = responseData.data.splitIngredients.splitDough;
+        }, { total: doughTotal.total });
+        const doughSplitIngredients = splitIngredients.splitDough;
         setState({
           ...state,
-          totalIngredients: totalIngredients,
-          panIngredients: pans
+          totalIngredients: doughTotalIngredients,
+          panIngredients: doughSplitIngredients
         });
       }).catch(() => {
       setState({
@@ -85,19 +86,19 @@ const PizzaManager = () => {
     })
   }
 
-  let totals = "";
-  let panIngredients = "";
+  let doughTotalIngredients = "";
+  let doughSplitIngredients = "";
 
   const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
 
   if (state.totalIngredients) {
-    totals = Object.keys(state.totalIngredients).map(key => (
+    doughTotalIngredients = Object.keys(state.totalIngredients).map(key => (
       <p key={key}>{capitalize(key)}: {state.totalIngredients[key]} g</p>
     ));
   }
 
   if (state.panIngredients) {
-    panIngredients = state.panIngredients.map((obj, index) => (
+    doughSplitIngredients = state.panIngredients.map((obj, index) => (
       <p key={index}>{panLabels[obj.shape]}: {obj.dough.total} g</p>
     ));
   }
@@ -111,8 +112,8 @@ const PizzaManager = () => {
                addHandler={openFormHandler}/>
       <Button size="medium" onClick={calculateIngredients} color="primary" variant="contained">Ingredient
         calculation</Button>
-      {(totals || panIngredients) ?
-        <Ingredients totalIngredients={totals} panIngredients={panIngredients}/> : null}
+      {(doughTotalIngredients || doughSplitIngredients) ?
+        <Ingredients totalIngredients={doughTotalIngredients} panIngredients={doughSplitIngredients} title={"Dough"}/> : null}
       <MyDialog title="Add a pan" open={state.activity === "addPan"} close={closeFormHandler}>
         <PanForm closeModal={closeFormHandler} complete={addPan}/>
       </MyDialog>

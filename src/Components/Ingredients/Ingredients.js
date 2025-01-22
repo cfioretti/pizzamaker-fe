@@ -6,18 +6,22 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Aux from '../../hoc/Aux/Aux';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
+import DialogTitle from "@material-ui/core/DialogTitle";
 
 const useStyles = makeStyles(() => ({
     root: {
         width: "100%",
         boxSizing: "border-box",
-        margin: "30px 0",
+        margin: "20px 0",
         display: "block",
         alignContent: "center"
     },
     card: {
         display: "inline-block",
-        padding: "30px 50px"
+        paddingTop: "5px",
+        paddingBottom: "25px",
+        paddingLeft: "50px",
+        paddingRight: "50px"
     },
     sectionTitle: {
         fontWeight: "bold"
@@ -39,9 +43,12 @@ export default function Ingredients(props) {
     return (
         <Box className={classes.root} alignContent="center">
             <Card raised className={classes.card}>
+                {props.title ?
+                    <DialogTitle>{props.title}</DialogTitle>
+                  : null}
                 <Grid container justifyContent="center" spacing={2}>
                     <Grid item>
-                        <Typography className={classes.sectionTitle} type='subtitle1'>
+                        <Typography className={classes.sectionTitle} type='subtitle2'>
                             Total Ingredients
                         </Typography>
                         {props.totalIngredients? props.totalIngredients: null}
@@ -54,7 +61,7 @@ export default function Ingredients(props) {
                                 </Grid>: null
                             }
                             <Grid item>
-                                <Typography className={classes.sectionTitle} type='subtitle1'>
+                                <Typography className={classes.sectionTitle} type='subtitle2'>
                                     Dough for pan
                                 </Typography>
                                 {props.panIngredients}
