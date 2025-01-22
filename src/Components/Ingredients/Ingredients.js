@@ -62,7 +62,7 @@ export default function Ingredients(props) {
                             }
                             <Grid item>
                                 <Typography className={classes.sectionTitle} type='subtitle2'>
-                                    Dough for pan
+                                    Ingredients for pan
                                 </Typography>
                                 {props.panIngredients}
                             </Grid>

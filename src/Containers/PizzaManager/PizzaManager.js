@@ -66,28 +66,40 @@ const PizzaManager = () => {
       .then(res => {
         const responseData = res.data;
         const doughTotal = responseData.data.dough;
+        const toppingTotal = responseData.data.topping;
         const splitIngredients = responseData.data.splitIngredients;
         const doughTotalIngredients = doughTotal.Ingredients.reduce((acc, ingredient) => {
           acc[ingredient.Name] = ingredient.Amount;
           return acc;
         }, { total: doughTotal.total });
         const doughSplitIngredients = splitIngredients.splitDough;
+        const toppingTotalIngredients = toppingTotal.Ingredients.reduce((acc, ingredient) => {
+          acc[ingredient.Name] = ingredient.Amount;
+          return acc;
+        }, {});
+        const toppingSplitIngredients = splitIngredients.splitTopping;
         setState({
           ...state,
           totalIngredients: doughTotalIngredients,
-          panIngredients: doughSplitIngredients
+          panIngredients: doughSplitIngredients,
+          toppingTotalIngredients: toppingTotalIngredients,
+          toppingSplitIngredients: toppingSplitIngredients
         });
       }).catch(() => {
       setState({
         ...state,
         totalIngredients: "",
-        panIngredients: ""
+        panIngredients: "",
+        toppingTotalIngredients: "",
+        toppingSplitIngredients: ""
       });
     })
   }
 
   let doughTotalIngredients = "";
   let doughSplitIngredients = "";
+  let toppingTotalIngredients = "";
+  let toppingSplitIngredients = "";
 
   const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
 
@@ -103,6 +115,18 @@ const PizzaManager = () => {
     ));
   }
 
+  if (state.toppingTotalIngredients) {
+    toppingTotalIngredients = Object.keys(state.toppingTotalIngredients).map(key => (
+      <p key={key}>{capitalize(key)}: {state.toppingTotalIngredients[key]} g</p>
+    ));
+  }
+
+  if (state.toppingSplitIngredients) {
+    toppingSplitIngredients = state.toppingSplitIngredients.map((obj, index) => (
+      <p key={index}>{panLabels[obj.shape]}: {obj.topping} g</p>
+    ));
+  }
+
   return (
     <Aux>
       {state.selectedPans.length > 0 ?
@@ -114,6 +138,8 @@ const PizzaManager = () => {
         calculation</Button>
       {(doughTotalIngredients || doughSplitIngredients) ?
         <Ingredients totalIngredients={doughTotalIngredients} panIngredients={doughSplitIngredients} title={"Dough"}/> : null}
+      {(toppingTotalIngredients || toppingSplitIngredients) ?
+        <Ingredients totalIngredients={toppingTotalIngredients} panIngredients={toppingSplitIngredients} title={"Topping"}/> : null}
       <MyDialog title="Add a pan" open={state.activity === "addPan"} close={closeFormHandler}>
         <PanForm closeModal={closeFormHandler} complete={addPan}/>
       </MyDialog>
