@@ -68,18 +68,21 @@ const PizzaManager = () => {
   }
 
   const calculateIngredients = () => {
-    let panToSend = state.selectedPans.map((value) => {
-      return state.pans[value];
-    });
+    let panToSend = state.selectedPans.map((value) => state.pans[value]);
     let uuid = "00000000-0000-0000-0000-000000000000";
+
     axios.post("/recipes/" + uuid + "/aggregate", {pans: panToSend})
       .then(res => {
         const responseData = res.data;
         const total = responseData.data.dough;
+        const totalIngredients = total.Ingredients.reduce((acc, ingredient) => {
+          acc[ingredient.Name] = ingredient.Amount;
+          return acc;
+        }, {});
         const pans = responseData.data.splitIngredients.splitDough;
         setState({
           ...state,
-          totalIngredients: total,
+          totalIngredients: totalIngredients,
           panIngredients: pans
         });
       }).catch(() => {
