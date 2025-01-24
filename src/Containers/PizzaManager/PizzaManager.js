@@ -14,12 +14,6 @@ const PizzaManager = () => {
     selectedPans: []
   });
 
-  const panLabels = {
-    rectangular: "Rectangular",
-    square: "Square",
-    round: "Round",
-  }
-
   const openFormHandler = () => {
     setState({...state, activity: "addPan"});
   }
@@ -101,29 +95,34 @@ const PizzaManager = () => {
   let toppingTotalIngredients = "";
   let toppingSplitIngredients = "";
 
-  const capitalize = (str) => str.charAt(0).toUpperCase() + str.slice(1);
+  const format = (str) => {
+    return str
+      .replace(/([A-Z])/g, ' $1')
+      .replace(/(\d+)/g, ' $1')
+      .replace(/^./, (char) => char.toUpperCase());
+  };
 
   if (state.totalIngredients) {
     doughTotalIngredients = Object.keys(state.totalIngredients).map(key => (
-      <p key={key}>{capitalize(key)}: {state.totalIngredients[key]} g</p>
+      <p key={key}>{format(key)}: {state.totalIngredients[key]} g</p>
     ));
   }
 
   if (state.panIngredients) {
     doughSplitIngredients = state.panIngredients.map((obj, index) => (
-      <p key={index}>{panLabels[obj.shape]}: {obj.dough.total} g</p>
+      <p key={index}>{format(obj.shape)}: {obj.dough.total} g</p>
     ));
   }
 
   if (state.toppingTotalIngredients) {
     toppingTotalIngredients = Object.keys(state.toppingTotalIngredients).map(key => (
-      <p key={key}>{capitalize(key)}: {state.toppingTotalIngredients[key]} g</p>
+      <p key={key}>{format(key)}: {state.toppingTotalIngredients[key]} g</p>
     ));
   }
 
   if (state.toppingSplitIngredients) {
     toppingSplitIngredients = state.toppingSplitIngredients.map((obj, index) => (
-      <p key={index}>{panLabels[obj.shape]}: {obj.topping} g</p>
+      <p key={index}>{format(obj.name)}: {obj.topping} g</p>
     ));
   }
 
