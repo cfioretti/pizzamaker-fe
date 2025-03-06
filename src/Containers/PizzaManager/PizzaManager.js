@@ -129,8 +129,8 @@ const PizzaManager = () => {
   return (
     <Aux>
       {state.selectedPans.length > 0 ?
-        <h3 style={{color: '#223b59'}}>Select one or more pans</h3> :
-        <h3 style={{visibility: "hidden"}}>Select one or more pans</h3>}
+        <h3 style={{color: '#223b59'}}>Select one or more panssss</h3> :
+        <h3 style={{visibility: "hidden"}}>Select one or more panssss</h3>}
       <PanList pans={state.pans} selectedPans={state.selectedPans} selectHandler={selectPanHandler}
                addHandler={openFormHandler}/>
       <Button size="medium" onClick={calculateIngredients} color="primary" variant="contained">Ingredient
