@@ -7,13 +7,12 @@ import TextField from '@material-ui/core/TextField';
 import Snackbar from '@material-ui/core/Snackbar';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import WbIncandescentIcon from '@material-ui/icons/WbIncandescent';
-import { useTheme } from '@material-ui/core/styles';
 import MyDialog from '../../Components/UI/MyDialog/MyDialog';
+import SectionTitle from '../../Components/UI/SectionTitle/SectionTitle';
 import axios from '../../Axios/Axios';
 import Ingredients from '../../Components/Ingredients/Ingredients';
 
 const PizzaManager = () => {
-  const theme = useTheme();
   const [state, setState] = useState({
     activity: 'ready',
     pans: [],
@@ -159,9 +158,9 @@ const PizzaManager = () => {
 
   return (
     <Aux>
-      {state.selectedPans.length === 0 ?
-        <h3 style={{color: theme.palette.secondary.main}}>Select one or more pans</h3> :
-        <h3 style={{visibility: "hidden"}}>Select one or more pans</h3>}
+      <SectionTitle level="h2" hidden={state.selectedPans.length > 0}>
+        Select one or more pans
+      </SectionTitle>
       <PanList pans={state.pans} selectedPans={state.selectedPans} selectHandler={selectPanHandler}
                addHandler={openFormHandler}/>
       <div style={{display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap'}}>
@@ -169,14 +168,17 @@ const PizzaManager = () => {
                 disabled={state.loading || state.selectedPans.length === 0}>
           Ingredient calculation
         </Button>
-        <Button size="medium" onClick={togglePromptBar} color="secondary" variant="contained"
+        <Button size="medium" onClick={togglePromptBar} color="primary" variant="outlined"
                 disabled={state.loading || state.selectedPans.length === 0}
-                startIcon={<WbIncandescentIcon />}>
+                startIcon={<WbIncandescentIcon />}
+                aria-expanded={state.showPrompt}
+                aria-controls="ai-recipe-prompt">
           Generate AI Recipe
         </Button>
       </div>
       {state.showPrompt ?
-        <div style={{display: 'flex', gap: '10px', alignItems: 'center', justifyContent: 'center',
+        <div id="ai-recipe-prompt"
+             style={{display: 'flex', gap: '10px', alignItems: 'center', justifyContent: 'center',
                      flexWrap: 'wrap', margin: '16px auto', maxWidth: 700}}>
           <TextField
             variant="outlined"

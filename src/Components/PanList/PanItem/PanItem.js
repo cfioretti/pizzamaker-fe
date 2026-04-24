@@ -87,7 +87,7 @@ export default function PanItem(props) {
                 aria-label="Add new pan"
             >
                 <img className={classes.icon} src="/plus.png" alt="" />
-                <h4 className={classes.label}>Add Pan</h4>
+                <span className={classes.label} aria-hidden="true">Add Pan</span>
             </Card>
         );
     }

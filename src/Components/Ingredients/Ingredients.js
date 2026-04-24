@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Aux from '../../hoc/Aux/Aux';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import DialogTitle from "@material-ui/core/DialogTitle";
+import SectionTitle from '../UI/SectionTitle/SectionTitle';
 
 const useStyles = makeStyles(() => ({
     root: {
@@ -44,31 +44,31 @@ export default function Ingredients(props) {
         <Box className={classes.root} alignContent="center">
             <Card raised className={classes.card}>
                 {props.title ?
-                    <DialogTitle>{props.title}</DialogTitle>
+                    <SectionTitle level="h2" variant="h6">{props.title}</SectionTitle>
                   : null}
                 <Grid container justifyContent="center" spacing={2}>
                     <Grid item>
-                        <Typography className={classes.sectionTitle} type='subtitle2'>
+                        <Typography className={classes.sectionTitle} variant='subtitle2' component='h3'>
                             Total Ingredients
                         </Typography>
                         {props.totalIngredients? props.totalIngredients: null}
                     </Grid>
                     {props.panIngredients.length > 1?
                         <Aux>
-                            {matches ?   
+                            {matches ?
                                 <Grid item>
                                     <div className={classes.verticalDivider}></div>
                                 </Grid>: null
                             }
                             <Grid item>
-                                <Typography className={classes.sectionTitle} type='subtitle2'>
+                                <Typography className={classes.sectionTitle} variant='subtitle2' component='h3'>
                                     Ingredients for pan
                                 </Typography>
                                 {props.panIngredients}
                             </Grid>
                         </Aux>:null
                     }
-                </Grid> 
+                </Grid>
             </Card>
         </Box>
     );
