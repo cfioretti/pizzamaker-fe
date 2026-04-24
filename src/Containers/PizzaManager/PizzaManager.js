@@ -51,6 +51,16 @@ const PizzaManager = () => {
     });
   }
 
+  const deletePanHandler = (index) => {
+    setState(prev => {
+      const pans = prev.pans.filter((_, i) => i !== index);
+      const selectedPans = prev.selectedPans
+        .filter(i => i !== index)
+        .map(i => (i > index ? i - 1 : i));
+      return {...prev, pans, selectedPans};
+    });
+  }
+
   const applyRecipeResponse = (res, extraState = {}) => {
     const responseData = res.data;
     const doughTotal = responseData.data.dough;
@@ -162,7 +172,7 @@ const PizzaManager = () => {
         Select one or more pans
       </SectionTitle>
       <PanList pans={state.pans} selectedPans={state.selectedPans} selectHandler={selectPanHandler}
-               addHandler={openFormHandler}/>
+               addHandler={openFormHandler} deleteHandler={deletePanHandler}/>
       <div style={{display: 'flex', gap: '12px', justifyContent: 'center', flexWrap: 'wrap'}}>
         <Button size="medium" onClick={calculateIngredients} color="primary" variant="contained"
                 disabled={state.loading || state.selectedPans.length === 0}>

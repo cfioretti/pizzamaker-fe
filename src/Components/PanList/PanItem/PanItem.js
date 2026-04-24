@@ -1,6 +1,8 @@
 import React from 'react';
 import Card from '@material-ui/core/Card';
+import IconButton from '@material-ui/core/IconButton';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import CloseIcon from '@material-ui/icons/Close';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
@@ -42,6 +44,18 @@ const useStyles = makeStyles(theme => ({
         color: theme.palette.primary.main,
         backgroundColor: theme.palette.background.paper,
         borderRadius: '50%',
+    },
+    deleteButton: {
+        position: 'absolute',
+        top: 2,
+        left: 2,
+        padding: 4,
+        opacity: 0.6,
+        color: theme.palette.secondary.main,
+        '&:hover, &:focus': {
+            opacity: 1,
+            backgroundColor: theme.palette.background.paper,
+        },
     },
 }));
 
@@ -100,6 +114,15 @@ export default function PanItem(props) {
     const iconPath = "/pans/" + props.shape + "-pan.png";
     const ariaLabel = buildAriaLabel(props.shape, props.dimensions);
 
+    const handleDeleteClick = (event) => {
+        event.stopPropagation();
+        if (props.deleteHandler) props.deleteHandler();
+    };
+
+    const handleDeleteKeyDown = (event) => {
+        event.stopPropagation();
+    };
+
     return (
         <Card
             className={cardClasses.join(' ')}
@@ -110,6 +133,17 @@ export default function PanItem(props) {
             aria-pressed={!!props.selected}
             aria-label={ariaLabel}
         >
+            {props.deleteHandler && (
+                <IconButton
+                    className={classes.deleteButton}
+                    size="small"
+                    onClick={handleDeleteClick}
+                    onKeyDown={handleDeleteKeyDown}
+                    aria-label={`Remove ${ariaLabel}`}
+                >
+                    <CloseIcon fontSize="small" />
+                </IconButton>
+            )}
             {props.selected && (
                 <CheckCircleIcon
                     className={classes.checkIcon}

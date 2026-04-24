@@ -27,6 +27,7 @@ export default function SpacingGrid(props) {
       {props.pans.map((pan, index) => (
           <Grid key={index} item xs={12} sm="auto">
             <PanItem key={index} selected={selectedPans.includes(index)} selectHandler={() => props.selectHandler(index)}
+                     deleteHandler={() => props.deleteHandler(index)}
                      shape={pan.shape} dimensions={pan.measures}/>
           </Grid>
       ))}
