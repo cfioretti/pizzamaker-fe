@@ -36,17 +36,17 @@ const useStyles = makeStyles(theme => ({
   },
   errorField: {
     '& .MuiOutlinedInput-root.Mui-error .MuiOutlinedInput-notchedOutline': {
-      borderColor: '#f4896f',
+      borderColor: theme.palette.error.main,
     },
     '& .MuiFormHelperText-root.Mui-error': {
-      color: '#f4896f',
+      color: theme.palette.error.main,
     },
     '& .MuiInputLabel-root.Mui-error': {
-      color: '#f4896f',
+      color: theme.palette.error.main,
     }
   },
   errorText: {
-    color: '#f4896f !important'
+    color: `${theme.palette.error.main} !important`
   }
 }));
 

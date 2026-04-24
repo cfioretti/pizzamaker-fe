@@ -14,7 +14,6 @@ const useStyles = makeStyles(theme => ({
       top: theme.spacing(1),
       color: theme.palette.grey[500],
   },
-  background: '#2C8D93'
 }));
 
 export default function MyDialog(props) {
@@ -23,7 +22,7 @@ export default function MyDialog(props) {
 
   return (
     <div>
-      <Dialog fullWidth open={props.open} onClose={props.close} aria-labelledby="max-width-dialog-title">
+      <Dialog fullWidth open={props.open} onClose={props.close} aria-labelledby="form-dialog-title">
         <DialogTitle id="form-dialog-title">
           {props.title}
           <IconButton aria-label="close" className={classes.closeButton} onClick={props.close}>

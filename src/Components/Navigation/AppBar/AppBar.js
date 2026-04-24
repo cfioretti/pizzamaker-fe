@@ -14,7 +14,7 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
   },
   navBar: {
-    background: 'linear-gradient(180deg, #2c8d93 33.33%, #223b59 33.33%, #223b59 66.67%, #2c8d93 66.67%, #2c8d93 100%, #2c8d93 100%)',
+    background: `linear-gradient(180deg, ${theme.palette.primary.light} 33.33%, ${theme.palette.secondary.main} 33.33%, ${theme.palette.secondary.main} 66.67%, ${theme.palette.primary.light} 66.67%, ${theme.palette.primary.light} 100%, ${theme.palette.primary.light} 100%)`,
     height: 100,
   },
   toolbar: {

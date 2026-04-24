@@ -7,11 +7,13 @@ import TextField from '@material-ui/core/TextField';
 import Snackbar from '@material-ui/core/Snackbar';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import WbIncandescentIcon from '@material-ui/icons/WbIncandescent';
+import { useTheme } from '@material-ui/core/styles';
 import MyDialog from '../../Components/UI/MyDialog/MyDialog';
 import axios from '../../Axios/Axios';
 import Ingredients from '../../Components/Ingredients/Ingredients';
 
 const PizzaManager = () => {
+  const theme = useTheme();
   const [state, setState] = useState({
     activity: 'ready',
     pans: [],
@@ -157,8 +159,8 @@ const PizzaManager = () => {
 
   return (
     <Aux>
-      {state.selectedPans.length > 0 ?
-        <h3 style={{color: '#223b59'}}>Select one or more pans</h3> :
+      {state.selectedPans.length === 0 ?
+        <h3 style={{color: theme.palette.secondary.main}}>Select one or more pans</h3> :
         <h3 style={{visibility: "hidden"}}>Select one or more pans</h3>}
       <PanList pans={state.pans} selectedPans={state.selectedPans} selectHandler={selectPanHandler}
                addHandler={openFormHandler}/>
