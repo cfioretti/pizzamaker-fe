@@ -21,11 +21,11 @@ export default function SpacingGrid(props) {
 
   return (
     <Grid container className={classes.root} spacing={2}>
-      <Grid key={-1} item xs={12} sm="auto">
+      <Grid key={-1} item xs="auto">
         <PanItem onClick={props.addHandler} create/>
       </Grid>
       {props.pans.map((pan, index) => (
-          <Grid key={index} item xs={12} sm="auto">
+          <Grid key={index} item xs="auto">
             <PanItem key={index} selected={selectedPans.includes(index)} selectHandler={() => props.selectHandler(index)}
                      deleteHandler={() => props.deleteHandler(index)}
                      shape={pan.shape} dimensions={pan.measures}/>
