@@ -12,6 +12,18 @@ import SectionTitle from '../../Components/UI/SectionTitle/SectionTitle';
 import axios from '../../Axios/Axios';
 import Ingredients from '../../Components/Ingredients/Ingredients';
 
+const format = (str) => str
+  .replace(/([A-Z])/g, ' $1')
+  .replace(/(\d+)/g, ' $1')
+  .replace(/^./, (char) => char.toUpperCase())
+  .trim();
+
+const buildItems = (ingredientArray) =>
+  ingredientArray.map((ing) => ({
+    label: format(ing.Name),
+    value: `${ing.Amount} g`,
+  }));
+
 const PizzaManager = () => {
   const [state, setState] = useState({
     activity: 'ready',
@@ -20,7 +32,9 @@ const PizzaManager = () => {
     error: null,
     loading: false,
     showPrompt: false,
-    prompt: ''
+    prompt: '',
+    dough: null,
+    topping: null,
   });
 
   const openFormHandler = () => {
@@ -66,20 +80,28 @@ const PizzaManager = () => {
     const doughTotal = responseData.data.dough;
     const toppingTotal = responseData.data.topping;
     const splitIngredients = responseData.data.splitIngredients;
-    const doughTotalIngredients = doughTotal.Ingredients.reduce((acc, ingredient) => {
-      acc[ingredient.Name] = ingredient.Amount;
-      return acc;
-    }, { total: doughTotal.total });
-    const toppingTotalIngredients = toppingTotal.Ingredients.reduce((acc, ingredient) => {
-      acc[ingredient.Name] = ingredient.Amount;
-      return acc;
-    }, {});
+
+    const dough = {
+      total: `${doughTotal.total} g`,
+      items: buildItems(doughTotal.Ingredients),
+      panItems: splitIngredients.splitDough.map((obj) => ({
+        label: format(obj.shape),
+        value: `${obj.dough.total} g`,
+      })),
+    };
+
+    const topping = {
+      items: buildItems(toppingTotal.Ingredients),
+      panItems: splitIngredients.splitTopping.map((obj) => ({
+        label: format(obj.name),
+        value: `${obj.topping} g`,
+      })),
+    };
+
     setState(prev => ({
       ...prev,
-      totalIngredients: doughTotalIngredients,
-      panIngredients: splitIngredients.splitDough,
-      toppingTotalIngredients: toppingTotalIngredients,
-      toppingSplitIngredients: splitIngredients.splitTopping,
+      dough,
+      topping,
       error: null,
       loading: false,
       ...extraState
@@ -90,10 +112,8 @@ const PizzaManager = () => {
     const message = err.response?.data?.error || "Request failed. Please try again.";
     setState(prev => ({
       ...prev,
-      totalIngredients: "",
-      panIngredients: "",
-      toppingTotalIngredients: "",
-      toppingSplitIngredients: "",
+      dough: null,
+      topping: null,
       error: message,
       loading: false
     }));
@@ -128,42 +148,6 @@ const PizzaManager = () => {
     axios.post("/recipes/generate", body)
       .then(res => applyRecipeResponse(res, {prompt: '', showPrompt: false}))
       .catch(handleRecipeError);
-  }
-
-  let doughTotalIngredients = "";
-  let doughSplitIngredients = "";
-  let toppingTotalIngredients = "";
-  let toppingSplitIngredients = "";
-
-  const format = (str) => {
-    return str
-      .replace(/([A-Z])/g, ' $1')
-      .replace(/(\d+)/g, ' $1')
-      .replace(/^./, (char) => char.toUpperCase());
-  };
-
-  if (state.totalIngredients) {
-    doughTotalIngredients = Object.keys(state.totalIngredients).map(key => (
-      <p key={key}>{format(key)}: {state.totalIngredients[key]} g</p>
-    ));
-  }
-
-  if (state.panIngredients) {
-    doughSplitIngredients = state.panIngredients.map((obj, index) => (
-      <p key={index}>{format(obj.shape)}: {obj.dough.total} g</p>
-    ));
-  }
-
-  if (state.toppingTotalIngredients) {
-    toppingTotalIngredients = Object.keys(state.toppingTotalIngredients).map(key => (
-      <p key={key}>{format(key)}: {state.toppingTotalIngredients[key]} g</p>
-    ));
-  }
-
-  if (state.toppingSplitIngredients) {
-    toppingSplitIngredients = state.toppingSplitIngredients.map((obj, index) => (
-      <p key={index}>{format(obj.name)}: {obj.topping} g</p>
-    ));
   }
 
   return (
@@ -208,10 +192,15 @@ const PizzaManager = () => {
         </div>
         : null}
       
-      {(doughTotalIngredients || doughSplitIngredients) ?
-        <Ingredients totalIngredients={doughTotalIngredients} panIngredients={doughSplitIngredients} title={"Dough"}/> : null}
-      {(toppingTotalIngredients || toppingSplitIngredients) ?
-        <Ingredients totalIngredients={toppingTotalIngredients} panIngredients={toppingSplitIngredients} title={"Topping"}/> : null}
+      {state.dough ?
+        <Ingredients title="Dough"
+                     total={state.dough.total}
+                     items={state.dough.items}
+                     panItems={state.dough.panItems}/> : null}
+      {state.topping ?
+        <Ingredients title="Topping"
+                     items={state.topping.items}
+                     panItems={state.topping.panItems}/> : null}
       <Snackbar
         open={!!state.error}
         autoHideDuration={8000}
