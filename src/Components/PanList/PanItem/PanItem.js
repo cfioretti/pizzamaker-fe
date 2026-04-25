@@ -37,6 +37,13 @@ const useStyles = makeStyles(theme => ({
     label: {
         color: theme.palette.secondary.main,
     },
+    createLabel: {
+        color: theme.palette.secondary.main,
+        fontWeight: 'bold',
+        fontSize: '1.17em',
+        margin: '13px 0',
+        textAlign: 'center',
+    },
     checkIcon: {
         position: 'absolute',
         top: 6,
@@ -101,7 +108,7 @@ export default function PanItem(props) {
                 aria-label="Add new pan"
             >
                 <img className={classes.icon} src="/plus.png" alt="" />
-                <span className={classes.label} aria-hidden="true">Add Pan</span>
+                <div className={classes.createLabel} aria-hidden="true">Add Pan</div>
             </Card>
         );
     }
