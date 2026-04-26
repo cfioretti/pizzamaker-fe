@@ -50,10 +50,10 @@ const useStyles = makeStyles(theme => ({
     sectionsContainer: {
         display: 'flex',
         flexDirection: 'column',
-        gap: 20,
+        gap: '20px',
         [theme.breakpoints.up('sm')]: {
             flexDirection: 'row',
-            gap: 48,
+            gap: '48px',
             alignItems: 'stretch',
         },
     },
