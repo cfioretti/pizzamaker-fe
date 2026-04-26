@@ -53,7 +53,7 @@ const useStyles = makeStyles(theme => ({
         gap: 20,
         [theme.breakpoints.up('sm')]: {
             flexDirection: 'row',
-            gap: 32,
+            gap: 48,
             alignItems: 'stretch',
         },
     },
